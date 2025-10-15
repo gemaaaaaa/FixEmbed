@@ -671,7 +671,7 @@ async def on_message(message):
                         display_text = f"{service} • {user_or_community}"
                     modified_link = original_link.replace("twitter.com", "fxtwitter.com")\
                                                  .replace("x.com", "fixupx.com")\
-                                                 .replace("instagram.com", "d.vxinstagram.com")\
+                                                 .replace("instagram.com", "eeinstagram.com")\
                                                  .replace("reddit.com", "vxreddit.com")\
                                                  .replace("old.reddit.com", "vxreddit.com")\
                                                  .replace("threads.net", "fixthreads.net")\
