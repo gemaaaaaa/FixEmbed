@@ -589,11 +589,11 @@ async def on_message(message):
     if channel_states.get(message.channel.id, True):
         try:
             # Standard link pattern to capture all the relevant links
-            link_pattern = r"https?://(?:www\.)?(twitter\.com/\w+/status/\d+|x\.com/\w+/status/\d+|instagram\.com/(?:p|reel)/[\w-]+|reddit\.com/r/\w+/s/\w+|reddit\.com/r/\w+/comments/\w+/\w+|old\.reddit\.com/r/\w+/comments/\w+/\w+|pixiv\.net/(?:en/)?artworks/\d+|threads\.net/@[^/]+/post/[\w-]+|bsky\.app/profile/[^/]+/post/[\w-]+|youtube\.com/watch\?v=[\w-]+|youtu\.be/[\w-]+|(?:vm\.|vt\.|www\.)?tiktok\.com/@[\w.-]+/video/\d+|tiktok\.com/t/[\w-]+)"
+            link_pattern = r"https?://(?:www\.)?(twitter\.com/\w+/status/\d+|x\.com/\w+/status/\d+|instagram\.com/(?:p|reel)/[\w-]+|reddit\.com/r/\w+/s/\w+|reddit\.com/r/\w+/comments/\w+/\w+|old\.reddit\.com/r/\w+/comments/\w+/\w+|pixiv\.net/(?:en/)?artworks/\d+|threads\.net/@[^/]+/post/[\w-]+|bsky\.app/profile/[^/]+/post/[\w-]+|youtube\.com/watch\?v=[\w-]+|youtu\.be/[\w-]+|(?:vm\.|vt\.|www\.)?tiktok\.com/@[\w.-]+/video/\d+|tiktok\.com/t/[\w-]+|(?:vm\.|vt\.)tiktok\.com/[\w-]+)"
             matches = re.findall(link_pattern, message.content)
 
             # Regex pattern to detect links surrounded by < >
-            surrounded_link_pattern = r"<https?://(?:www\.)?(twitter\.com/\w+/status/\d+|x\.com/\w+/status/\d+|instagram\.com/(?:p|reel)/[\w-]+|reddit\.com/r/\w+/s/\w+|reddit\.com/r/\w+/comments/\w+/\w+|old\.reddit\.com/r/\w+/comments/\w+/\w+|pixiv\.net/(?:en/)?artworks/\d+|threads\.net/@[^/]+/post/[\w-]+|bsky\.app/profile/[^/]+/post/[\w-]+|youtube\.com/watch\?v=[\w-]+|youtu\.be/[\w-]+|(?:vm\.|vt\.|www\.)?tiktok\.com/@[\w.-]+/video/\d+|tiktok\.com/t/[\w-]+)>"
+            surrounded_link_pattern = r"<https?://(?:www\.)?(twitter\.com/\w+/status/\d+|x\.com/\w+/status/\d+|instagram\.com/(?:p|reel)/[\w-]+|reddit\.com/r/\w+/s/\w+|reddit\.com/r/\w+/comments/\w+/\w+|old\.reddit\.com/r/\w+/comments/\w+/\w+|pixiv\.net/(?:en/)?artworks/\d+|threads\.net/@[^/]+/post/[\w-]+|bsky\.app/profile/[^/]+/post/[\w-]+|youtube\.com/watch\?v=[\w-]+|youtu\.be/[\w-]+|(?:vm\.|vt\.|www\.)?tiktok\.com/@[\w.-]+/video/\d+|tiktok\.com/t/[\w-]+|(?:vm\.|vt\.)tiktok\.com/[\w-]+)>"
 
             valid_link_found = False
 
@@ -678,6 +678,11 @@ async def on_message(message):
                         if short_match:
                             user_or_community = short_match[0]
                             display_text = f"TikTok • {short_match[0]}"
+                        else:
+                            shortened_match = re.findall(r"(?:vt\.|vm\.)tiktok\.com/([\w-]+)", original_link)
+                            if shortened_match:
+                                user_or_community = shortened_match[0]
+                                display_text = f"TikTok • {shortened_match[0]}"
 
                 if service and user_or_community and service in enabled_services:
                     if not display_text:
